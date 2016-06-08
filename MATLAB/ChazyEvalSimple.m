@@ -7,7 +7,7 @@ y(1,:)=y0(:);
 step = h*exp(1i*angle(y1(1)-y0(1)));
 for n = 1:abs(y1(1)-y0(1))/h
     if (max(abs(y(n,:) + step*system(y(n,:))))>tol)
-        result = 0;
+        result = y(n,:);
         return;
     end
     k1 = system(y(n,:));
