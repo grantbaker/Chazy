@@ -1,12 +1,12 @@
-function [ out ] = ChazyPoints(system, y0, r, h, th, tol)
-%CHAZYPOINTS Generate points in the complex plane of system
+function [ out ] = ChazyPointsSimple(system, y0, r, h, th, tol)
+%CHAZYPOINTSSIMPLE Generate points in the complex plane of system
 y=[];
 y(1,:)=y0(:);
 for ang = 0:th:(2*pi)
    yint = [];
    yint(1,:) = y(1,:);
+   step = h*exp(1i*ang);
    for n = 1:r/h
-       step = h*exp(1i*ang);
        if (max(abs(yint(n,:) + step*system(yint(n,:))))>tol)
           break; 
        end
