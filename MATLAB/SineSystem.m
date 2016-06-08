@@ -1,5 +1,4 @@
 function [ outVector ] = SineSystem( inVector )
-    outVector(1) = inVector(2);
-    outVector(2) = -(inVector(1));
+    outVector = [1,inVector(3),-inVector(2)];
 end
 
