@@ -42,7 +42,7 @@ function a =polevault(t0,y10,y20,y30,th0,tol,h,th)
         y31=y30 + (step/6)*(k31 + 2*k32 + 2*k33 + k34);
     end
     while and(abs(y11)>tol|abs(y21)>tol|abs(y31)>tol,th1>th0-2*pi)
-        th1=th1-th
+        th1=th1-th;
         step=h*exp(i*th1);
         k11 = f1(t0, y10, y20, y30);
         k21 = f2(t0, y10, y20, y30);
@@ -60,33 +60,38 @@ function a =polevault(t0,y10,y20,y30,th0,tol,h,th)
         y11=y10 + (step/6)*(k11 + 2*k12 + 2*k13 + k14);
         y21=y20 + (step/6)*(k21 + 2*k22 + 2*k23 + k24);
         y31=y30 + (step/6)*(k31 + 2*k32 + 2*k33 + k34);
-        abs(y31)
+        abs(y31);
     end
     if th1>th0-2*pi
-        t(1)=t1;
-        y1(1)=y11;
-        y2(1)=y21;
-        y3(1)=y31;
-        ths(1)=th1;
-        th2=th1;
         n=1;
-        y12=y1(n);
-        y22=y2(n);
-        y32=y3(n);
-        t2=t(n);
-        while n<10%<th1+2*pi
-            y12=y1(n);
-            y22=y2(n);
-            y32=y3(n);
-            t2=t(n);
-            th2=ths(n)-th
-            n
-            while and(not(abs(y12)>tol|abs(y22)>tol|abs(y32)>tol),th2<th1+2*pi)
-                y11=y12;
-                y21=y22;
-                y31=y32;
-                t1=t2;
-                th2=th2+th
+        t(n)=t1;
+        y1(n)=y11;
+        y2(n)=y21;
+        y3(n)=y31;
+        ths(n)=th1;
+        while ths(n)<ths(1)+2*pi
+        step=h*exp(i*ths(n));
+        k11 = f1(t(n), y1(n), y2(n), y3(n));
+        k21 = f2(t(n), y1(n), y2(n), y3(n));
+        k31 = f3(t(n), y1(n), y2(n), y3(n));
+        k12 = f1(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
+        k22 = f2(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
+        k32 = f3(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
+        k13 = f1(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
+        k23 = f2(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
+        k33 = f3(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
+        k14 = f1(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
+        k24 = f2(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
+        k34 = f3(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
+        t2=t(n)+step;
+        y12=y1(n) + (step/6)*(k11 + 2*k12 + 2*k13 + k14);
+        y22=y2(n) + (step/6)*(k21 + 2*k22 + 2*k23 + k24);
+        y32=y3(n) + (step/6)*(k31 + 2*k32 + 2*k33 + k34);
+        abs(y3);
+        if abs(y12)>tol|abs(y22)>tol|abs(y32)>tol
+            th2=ths(n);
+            while and(abs(y12)>tol|abs(y22)>tol|abs(y32)>tol,th2>ths(n)-2*pi)
+                th2=th2-th;
                 step=h*exp(i*th2);
                 k11 = f1(t(n), y1(n), y2(n), y3(n));
                 k21 = f2(t(n), y1(n), y2(n), y3(n));
@@ -94,9 +99,9 @@ function a =polevault(t0,y10,y20,y30,th0,tol,h,th)
                 k12 = f1(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
                 k22 = f2(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
                 k32 = f3(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
-                k13 = f1(t(n) + step/2, y1(n)+ (step/2)*k12, y2(n)+ (step/2)*k22, y3(n)+ (step/2)*k32);
-                k23 = f2(t(n) + step/2, y1(n)+ (step/2)*k12, y2(n)+ (step/2)*k22, y3(n)+ (step/2)*k32);
-                k33 = f3(t(n) + step/2, y1(n)+ (step/2)*k12, y2(n)+ (step/2)*k22, y3(n)+ (step/2)*k32);
+                k13 = f1(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
+                k23 = f2(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
+                k33 = f3(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
                 k14 = f1(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
                 k24 = f2(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
                 k34 = f3(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
@@ -104,20 +109,70 @@ function a =polevault(t0,y10,y20,y30,th0,tol,h,th)
                 y12=y1(n) + (step/6)*(k11 + 2*k12 + 2*k13 + k14);
                 y22=y2(n) + (step/6)*(k21 + 2*k22 + 2*k23 + k24);
                 y32=y3(n) + (step/6)*(k31 + 2*k32 + 2*k33 + k34);
-                [y12,y22,y32]
             end
-            n=n+1;
-            t(n)=t1;
-            y11;
-            y21;
-            y31;
-            y1(n)=y11;
-            y2(n)=y21;
-            y3(n)=y31;
-            ths(n)=th2-th;
-       end
+            t1=t2;
+            y11=y12;
+            y21=y22;
+            y31=y32;
+            th1=th2;
+        else
+            th2=ths(n);
+            while and(not(abs(y12)>tol|abs(y22)>tol|abs(y32)>tol),th2<ths(n)+2*pi)
+                t1=t2;
+                y11=y12;
+                y21=y22;
+                y31=y32;
+                th1=th2;
+                th2=th2+th;
+                step=h*exp(i*th2);
+                k11 = f1(t(n), y1(n), y2(n), y3(n));
+                k21 = f2(t(n), y1(n), y2(n), y3(n));
+                k31 = f3(t(n), y1(n), y2(n), y3(n));
+                k12 = f1(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
+                k22 = f2(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
+                k32 = f3(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
+                k13 = f1(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
+                k23 = f2(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
+                k33 = f3(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
+                k14 = f1(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
+                k24 = f2(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
+                k34 = f3(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
+                t2=t(n)+step;
+                y12=y1(n) + (step/6)*(k11 + 2*k12 + 2*k13 + k14);
+                y22=y2(n) + (step/6)*(k21 + 2*k22 + 2*k23 + k24);
+                y32=y3(n) + (step/6)*(k31 + 2*k32 + 2*k33 + k34);
+            end
+        end
+        n=n+1;
+        t(n)=t1;
+        y1(n)=y11;
+        y2(n)=y21;
+        y3(n)=y31;
+        ths(n)=th1;
+        end
     end
+    step=t(1)-t(n);
+    k11 = f1(t(n), y1(n), y2(n), y3(n));
+    k21 = f2(t(n), y1(n), y2(n), y3(n));
+    k31 = f3(t(n), y1(n), y2(n), y3(n));
+    k12 = f1(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
+    k22 = f2(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
+    k32 = f3(t(n) + step/2, y1(n) + (step/2)*k11, y2(n) + (step/2)*k21, y3(n) + (step/2)*k31);
+    k13 = f1(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
+    k23 = f2(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
+    k33 = f3(t(n) + step/2, y1(n) + (step/2)*k12, y2(n) + (step/2)*k22, y3(n)+ (step/2)*k32);
+    k14 = f1(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
+    k24 = f2(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
+    k34 = f3(t(n) + step, y1(n)+ step*k13,y2(n) + step*k23, y3(n) + step*k33);
+    t2=t(n)+step;
+    y12=y1(n) + (step/6)*(k11 + 2*k12 + 2*k13 + k14);
+    y22=y2(n) + (step/6)*(k21 + 2*k22 + 2*k23 + k24);
+    y32=y3(n) + (step/6)*(k31 + 2*k32 + 2*k33 + k34);
+    t(n)=t2;
+    y1(n)=y12;
+    y2(n)=y22;
+    y3(n)=y32;
     [t1,th1];
-    a=[t];
+    a=[t;y1;y2;y3];
       
 end
