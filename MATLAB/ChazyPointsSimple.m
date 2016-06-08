@@ -5,8 +5,8 @@ y(1,:)=y0(:);
 for ang = 0:th:(2*pi)
    yint = [];
    yint(1,:) = y(1,:);
+   step = h*exp(1i*ang);
    for n = 1:r/h
-       step = h*exp(1i*ang);
        if (max(abs(yint(n,:) + step*system(yint(n,:))))>tol)
           break; 
        end
