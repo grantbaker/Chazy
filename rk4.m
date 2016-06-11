@@ -5,7 +5,8 @@ poles=[0;0;0;0];
 p=1;
 y(1,:)=y0(:);  
 for ang = 0:th:(2*pi)
-   yint = [];
+   ang
+    yint = [];
    yint(1,:) = y(1,:);
    step = h*exp(1i*ang);
    n=1;
@@ -15,12 +16,13 @@ for ang = 0:th:(2*pi)
           c=yint(n,1);
            n=n-1;
           d=yint(n,:);
-          f=ang
+          f=ang;
           if o<50
               a=generalPole(system,yint(n,:),ang,tol,h,th,r-abs(yint(n,1)-y0(1)));
           else
               break
-           end
+          end
+           
           if (a==0)
               break
           else
@@ -33,7 +35,7 @@ for ang = 0:th:(2*pi)
               end
               if in==0
                   poles(:,p)=pe;
-                  p=p+1;
+                  p=p+1
               end
               o=o+1;
               while ang>=2*pi
@@ -69,6 +71,6 @@ for ang = 0:th:(2*pi)
    y = [y;yint];
    
 end
-out = [y];
+out = [poles];
 
 end

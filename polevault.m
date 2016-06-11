@@ -20,8 +20,8 @@ function a =polevault(t0,y10,y20,y30,th0,tol,h,th)
     y31=y30;
     th1=th0;
     while not(abs(y11)>tol|abs(y21)>tol|abs(y31)>tol)
-        t0=t1;
-        y10=y11;
+        t0=t1
+        y10=y11
         y20=y21;
         y30=y31;
         k11 = f1(t0, y10, y20, y30);
@@ -40,7 +40,7 @@ function a =polevault(t0,y10,y20,y30,th0,tol,h,th)
         y11=y10 + (step/6)*(k11 + 2*k12 + 2*k13 + k14);
         y21=y20 + (step/6)*(k21 + 2*k22 + 2*k23 + k24);
         y31=y30 + (step/6)*(k31 + 2*k32 + 2*k33 + k34);
-    end
+   end
     while and(abs(y11)>tol|abs(y21)>tol|abs(y31)>tol,th1>th0-2*pi)
         th1=th1-th;
         step=h*exp(1i*th1);
@@ -56,8 +56,8 @@ function a =polevault(t0,y10,y20,y30,th0,tol,h,th)
         k14 = f1(t0 + step, y10+ step*k13,y20 + step*k23, y30 + step*k33);
         k24 = f2(t0 + step, y10+ step*k13,y20 + step*k23, y30 + step*k33);
         k34 = f3(t0 + step, y10+ step*k13,y20 + step*k23, y30 + step*k33);
-        t1=t0+step;
-        y11=y10 + (step/6)*(k11 + 2*k12 + 2*k13 + k14);
+        t1=t0+step
+        y11=y10 + (step/6)*(k11 + 2*k12 + 2*k13 + k14)
         y21=y20 + (step/6)*(k21 + 2*k22 + 2*k23 + k24);
         y31=y30 + (step/6)*(k31 + 2*k32 + 2*k33 + k34);
         abs(y31);
@@ -151,7 +151,7 @@ function a =polevault(t0,y10,y20,y30,th0,tol,h,th)
         ths(n)=th1;
         end
     end
-    step=t(1)-t(n);
+    step=(t(1)-t(n));
     k11 = f1(t(n), y1(n), y2(n), y3(n));
     k21 = f2(t(n), y1(n), y2(n), y3(n));
     k31 = f3(t(n), y1(n), y2(n), y3(n));
