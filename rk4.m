@@ -1,7 +1,7 @@
-function [ out ] = rk4(system, y0, r, h, th, tol)
+function  [out,pol]= rk4(system, y0, r, h, th, tol)
 %CHAZYPOINTSSIMPLE Generate points in the complex plane of system
 y=[];
-poles=[0;0;0;0];
+poles=[0;0;0;0;0;0];
 p=1;
 y(1,:)=y0(:);  
 for ang = 0:th:(2*pi)
@@ -13,12 +13,13 @@ for ang = 0:th:(2*pi)
    o=0;
    while abs(yint(n,1)-yint(1,1))<r
        if (max(abs(yint(n,:)))>tol)
+          ang;
           c=yint(n,1);
            n=n-1;
           d=yint(n,:);
           f=ang;
           if o<50
-              a=generalPole(system,yint(n,:),ang,tol,h,th,r-abs(yint(n,1)-y0(1)));
+              a=generalPole(system,yint(n,:),ang,tol,h/2,th/2,r-abs(yint(n,1)-y0(1)));
           else
               break
           end
@@ -29,7 +30,7 @@ for ang = 0:th:(2*pi)
               in=0;
               pe=poleEval(a);
               for v=1:length(poles(3,:))
-                  if abs((pe(3)-poles(3,v)))<h*10
+                  if abs((pe(3)-poles(3,v)))<poles(5,v)*2
                       in=1;
                   end
               end
@@ -71,6 +72,7 @@ for ang = 0:th:(2*pi)
    y = [y;yint];
    
 end
-out = [poles];
+out = y;
+pol=poles
 
-end
+end 
