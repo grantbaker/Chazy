@@ -10,9 +10,12 @@ for n = 1:abs(y1(1)-y0(1))/h
     k4 = system(y(n,:) + step*k3);
     sol = y(n,:) + (step/6)*(k1 + 2*k2 + 2*k3 + k4);
     if (max(abs(sol)) > tol)
-        %PoleVault logic here
+        vaulted = PoleVault(system, y(n,:), angle(y1(1)-y0(1)), h, th, tol);
+        result = ChazyEvalPoleVault(system, vaulted(1,:), y1, h, th, tol);
+        return; 
     else
         y(n+1,:) = sol;
+    end
 end
 result = y(n+1,:);
 
