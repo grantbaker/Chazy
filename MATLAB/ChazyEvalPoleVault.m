@@ -1,4 +1,4 @@
-function [ result ] = ChazyEvalPoleVault(system, y0, y1, h, tol)
+function [ result ] = ChazyEvalPoleVault(system, y0, y1, h, th, tol)
 %CHAZYEVALPOLEVAULT Same as ChazyEvalSimple but vaults around poles
 y=[];
 y(1,:)=y0(:);
