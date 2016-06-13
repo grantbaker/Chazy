@@ -9,3 +9,5 @@ ComplexPlot(ChazyPointsSimple(@RamanujanQ, ChazyEvalSimple(@RamanujanQ, ChazyEva
 ComplexPlot(ChazyPointsSimple(@RamanujanTau, [1i,1i,1i,0], 15, 0.05, 0.01, 10^10), 10^2)
 ComplexPlot(ChazyPointsSimple(@RamanujanTau, ChazyEvalSimple(@RamanujanTau, [1i,1i,1i,0],8i,0.0002,10^10), 15, 0.05, 0.01, 10^10),10^2)
 ComplexPlot(ChazyPointsSimple(@RamanujanTau, ChazyEvalSimple(@RamanujanTau, [1i,1i,1i,0],10,0.0002,10^10), 50, 0.1,0.05,10^10),10^2)
+ 
+ComplexPlot(PoleVault(@ChazyEq, [0.500000000000000,11.9999985019477,23.9999840858083,95.9998080304397], 0, 0.1, 0.1, 10^3),10^2)
