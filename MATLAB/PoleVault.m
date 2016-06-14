@@ -7,8 +7,13 @@ y(1,:) = y0;
 lY = 1;
 m = 0;
 initAngle = 1i;
-while (abs(m*th) < 2*pi)
+while (abs(m*th) < pi)
     m = m+1;
+    disp(m);
+    disp([y0,y0(1)+h*exp(1i*(ang-th*m))]);
+    disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)),tol));
+    disp([y0,y0(1)+h*exp(1i*(ang+th*m))]);
+    disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)),tol));
     if (size(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)),tol),1) ~= 0)
         initAngle = ang-th*m;
         break;
@@ -19,6 +24,7 @@ while (abs(m*th) < 2*pi)
         break;
     end
 end
+disp(initAngle);
 if (initAngle == 1i)
     out = [];
     return;
@@ -28,7 +34,7 @@ lY = lY+1;
 y(lY,:) = ChazyEvalDirect(system,y0,y0+h*exp(1i*initAngle),tol);
 
 while or(lY < 10,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)) > 1*h)
-    %disp(initAngle);
+    disp(initAngle);
     m = 0;
     eval = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*m)),tol);
     if (size(eval,1) ~= 0)
