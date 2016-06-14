@@ -7,6 +7,8 @@ y=[];
 y(1,:)=y0(:);
 
 for ang = 0:th:(2*pi)
+    disp('new angle:');
+    disp(ang);
     y = [y;ChazyPointsLine(system,y0,r*exp(1i*ang),h,th,tol)];
 end
 
