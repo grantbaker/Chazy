@@ -13,11 +13,11 @@ m = 0;
 initAngle = 1i;
 while (abs(m*th) < pi)
     m = m+1;
-    %disp(m);
-    %disp([y0,y0(1)+h*exp(1i*(ang-th*m))]);
-    %disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)),tol));
-    %disp([y0,y0(1)+h*exp(1i*(ang+th*m))]);
-    %disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)),tol));
+    disp(m);
+    disp([y0,y0(1)+h*exp(1i*(ang-th*m))]);
+    disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)),tol));
+    disp([y0,y0(1)+h*exp(1i*(ang+th*m))]);
+    disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)),tol));
     if (size(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)),tol),1) ~= 0)
         initAngle = ang-th*m;
         break;
@@ -31,6 +31,7 @@ end
 %disp(initAngle);
 if (initAngle == 1i)
     %disp('polevault terminated prematurely');
+    warning('CHAZY:PoleVault:noValidInitialAngle','No valid initial angle to begin pole vaulting.');
     out = y0;
     return;
 end
@@ -59,6 +60,7 @@ while and(lY<1000,or(lY < 5,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)
             m = m+1;
         end
         if (found == 0)
+            warning('CHAZY:PoleVault:noStepsIntersectTolerance','Valid initial angle, but no subsequent angles intersect with tolerance');
             initAngle = angle(y0(1)+abs(y(lY,1)-y0(1))*exp(1i*ang)-y(lY,1));
             y(lY+1,:) = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*initAngle),tol);
             lY = lY+1;
