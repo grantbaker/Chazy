@@ -18,11 +18,11 @@ while (abs(m*th) < pi)
     disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)),tol));
     disp([y0,y0(1)+h*exp(1i*(ang+th*m))]);
     disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)),tol));
-    if (size(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)),tol),1) ~= 0)
+    if (max(abs(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)),tol)))<tol)
         initAngle = ang-th*m;
         break;
     end
-    if (size(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)),tol),1) ~= 0)
+    if (max(abs(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)),tol)))<tol)
         initAngle = ang+th*m;
         th = -th;
         break;
@@ -39,16 +39,24 @@ end
 lY = lY+1;
 y(lY,:) = ChazyEvalDirect(system,y0,y0+h*exp(1i*initAngle),tol);
 
-while and(lY<1000,or(lY < 5,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)) > 1*h))
+%adjustment parameters
+alpha = 6;
+beta = 10;
+
+numSteps = floor(alpha+beta*(abs(mod(initAngle,2*pi)-mod(ang,2*pi))));
+disp(numSteps);
+
+while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)) > 1*h))
     %disp(initAngle);
     m = 0;
     eval = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*m)),tol);
     found = 0;
-    if (size(eval,1) ~= 0)
+    if (max(abs(eval))<tol)
+        %valid, need to find closest contour by closing angle
         while (abs(m*th) < 2*pi)
             eval2 = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*(m+1))),tol);
             %disp(eval2);
-            if (size(eval2,1) == 0)
+            if (max(abs(eval2))>tol)
                 lY = lY+1;
                 y(lY,:) = eval;
                 initAngle = initAngle+th*m;
@@ -69,10 +77,11 @@ while and(lY<1000,or(lY < 5,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)
             return;
         end
     else
+        %invalid, need to expand angle
         while (abs(m*th) < 2*pi)
             eval = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*initAngle+th*m),tol);
             %disp(eval);
-            if (size(eval,1) ~= 0) 
+            if (max(abs(eval))<tol) 
                 lY = lY+1;
                 y(lY,:) = eval;
                 initAngle = initAngle+th*m;
@@ -83,10 +92,13 @@ while and(lY<1000,or(lY < 5,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)
         end
         
     end
+    %{
     if (found == 0)
         tol = tol*10;
     end
-    
+    %}
+    %disp('threshold dist to line:');
+    %disp(abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)));
 end
 %disp('polevault completed at:');
 %disp(y(lY,:));
