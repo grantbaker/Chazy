@@ -14,3 +14,6 @@ ComplexPlot(PoleVault(@ChazyEq, [0.500000000000000,11.9999985019477,23.999984085
 
 ComplexPlot(ChazyPointsSimple(@PainleveI,[0,1,1],3,0.01,0.01,100),100)
 ComplexPlot(ChazyPointsSimple(@PainleveI,[0,1,1],3,0.01,0.01,100),100)
+
+%notable PII
+ComplexPlot(ChazyPointsSimple(@PainleveII,[-1,-2,2],4,0.01,0.01,100),100)

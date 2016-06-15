@@ -63,6 +63,8 @@ while and(lY<1000,or(lY < 5,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)
             y(lY+1,:) = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*initAngle),tol);
             lY = lY+1;
             found = 1;
+            out = y;
+            return;
         end
     else
         while (abs(m*th) < 2*pi)
