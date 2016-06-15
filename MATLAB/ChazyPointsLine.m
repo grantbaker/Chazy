@@ -15,8 +15,8 @@ for n = 1:abs(y1(1)-y0(1))/h
     sol = y(n,:) + (step/6)*(k1 + 2*k2 + 2*k3 + k4);
     if (max(abs(sol)) > tol)
         pv = PoleVault(system,y(n,:),angle(y1(1)-y(n,1)),h,th,tol);
-        if (abs(pv(size(pv,1),1)-y0(1)) > abs(y1(1)-y0(1)))
-            disp('terminating following pole vault');
+        if or(abs(pv(size(pv,1),1)-y0(1)) > abs(y1(1)-y0(1)),size(pv,1)==1)
+            %disp('terminating following pole vault');
             out = [y;pv];
             return;
         else
