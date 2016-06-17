@@ -13,16 +13,16 @@ m = 0;
 initAngle = 1i;
 while (abs(m*th) < pi)
     m = m+1;
-    disp(m);
-    disp([y0,y0(1)+h*exp(1i*(ang-th*m))]);
-    disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)),tol));
-    disp([y0,y0(1)+h*exp(1i*(ang+th*m))]);
-    disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)),tol));
-    if (max(abs(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)),tol)))<tol)
+    %disp(m);
+    %disp([y0,y0(1)+h*exp(1i*(ang-th*m))]);
+    %disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)),tol));
+    %disp([y0,y0(1)+h*exp(1i*(ang+th*m))]);
+    %disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)),tol));
+    if (max(abs(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)))))<tol)
         initAngle = ang-th*m;
         break;
     end
-    if (max(abs(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)),tol)))<tol)
+    if (max(abs(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)))))<tol)
         initAngle = ang+th*m;
         th = -th;
         break;
@@ -37,7 +37,7 @@ if (initAngle == 1i)
 end
 
 lY = lY+1;
-y(lY,:) = ChazyEvalDirect(system,y0,y0+h*exp(1i*initAngle),tol);
+y(lY,:) = ChazyEvalDirect(system,y0,y0+h*exp(1i*initAngle));
 
 %adjustment parameters
 alpha = 6;
@@ -49,12 +49,12 @@ disp(numSteps);
 while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)) > 1*h))
     %disp(initAngle);
     m = 0;
-    eval = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*m)),tol);
+    eval = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*m)));
     found = 0;
     if (max(abs(eval))<tol)
         %valid, need to find closest contour by closing angle
         while (abs(m*th) < 2*pi)
-            eval2 = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*(m+1))),tol);
+            eval2 = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*(m+1))));
             %disp(eval2);
             if (max(abs(eval2))>tol)
                 lY = lY+1;
@@ -70,7 +70,7 @@ while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i
         if (found == 0)
             warning('CHAZY:PoleVault:noStepsIntersectTolerance','Valid initial angle, but no subsequent angles intersect with tolerance');
             initAngle = angle(y0(1)+abs(y(lY,1)-y0(1))*exp(1i*ang)-y(lY,1));
-            y(lY+1,:) = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*initAngle),tol);
+            y(lY+1,:) = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*initAngle));
             lY = lY+1;
             found = 1;
             out = y;
@@ -79,7 +79,7 @@ while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i
     else
         %invalid, need to expand angle
         while (abs(m*th) < 2*pi)
-            eval = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*initAngle+th*m),tol);
+            eval = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*initAngle+th*m));
             %disp(eval);
             if (max(abs(eval))<tol) 
                 lY = lY+1;

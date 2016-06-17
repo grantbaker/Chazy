@@ -1,4 +1,4 @@
-function [ result ] = ChazyEvalDirect(system, y0, y1, tol)
+function [ result ] = ChazyEvalDirect(system, y0, y1)
 %CHAZYEVALDIRECT Solves system in a line from y0 to y1 in a single step
 %returns result at y1
 
