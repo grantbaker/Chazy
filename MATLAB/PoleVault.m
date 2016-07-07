@@ -6,6 +6,8 @@ function [ out,valid ] = PoleVault(system, y0, ang, h, th, tol)
 %disp('new polevault at:');
 %disp([y0,ang]);
 
+stepAdj = 3;
+
 valid = 0;
 y=[];
 y(1,:) = y0;
@@ -21,12 +23,12 @@ while (abs(m*th) < pi)
     %disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)),tol));
     if (max(abs(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)))))<tol)
         %initAngle = ang-th*m;
-        initAngle = ang-th*(m+1);
+        initAngle = ang-th*(m+stepAdj);
         break;
     end
     if (max(abs(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)))))<tol)
         %initAngle = ang+th*m;
-        initAngle = ang+th*(m+1);
+        initAngle = ang+th*(m+stepAdj);
         th = -th;
         break;
     end
@@ -59,7 +61,7 @@ while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i
         %valid, need to find closest contour by closing angle
         while (abs(m*th) < 2*pi)
             %eval2 = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*(m+1))));
-            eval2 = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*(m+2))));
+            eval2 = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*(m+1+stepAdj))));
             %disp(eval2);
             if (max(abs(eval2))>tol)
                 lY = lY+1;
@@ -89,7 +91,7 @@ while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i
             if (max(abs(eval))<tol) 
                 lY = lY+1;
                 %y(lY,:) = eval;
-                y(lY,:) = ChazyEvalDirect(system,y(lY-1,:),y(lY-1,1)+h*exp(1i*initAngle+th*(m-1)));
+                y(lY,:) = ChazyEvalDirect(system,y(lY-1,:),y(lY-1,1)+h*exp(1i*initAngle+th*(m-stepAdj)));
                 initAngle = initAngle+th*m;
                 found = 1;
                 break;
