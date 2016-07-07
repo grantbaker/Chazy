@@ -41,12 +41,12 @@ y(lY,:) = ChazyEvalDirect(system,y0,y0+h*exp(1i*initAngle));
 
 %adjustment parameters
 alpha = 6;
-beta = 10;
+beta = .1;
 
-numSteps = floor(alpha+beta*(abs(mod(initAngle,2*pi)-mod(ang,2*pi))));
+numSteps = floor(alpha+beta*(h^-1)*(abs(mod(initAngle,2*pi)-mod(ang,2*pi))));
 disp(numSteps);
 
-while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)) > 1*h))
+while and(lY<100,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)) > 1*h))
     %disp(initAngle);
     m = 0;
     eval = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*m)));
