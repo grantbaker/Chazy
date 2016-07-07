@@ -1,4 +1,4 @@
-function [ out ] = ChazyPointsLine(system, y0, y1, h, th, tol )
+function [ out ] = ChazyPointsLine(system, y0, y1, h, th, tol)
 %CHAZYPOINTSLINE Generates and returns a list of points on a line between
 %y0 and y1. 
 %Uses recursion to evaluate the rest of the line behind a singularity of
@@ -17,13 +17,13 @@ for n = 1:abs(y1(1)-y0(1))/h
     %}
     sol = ChazyEvalDirect(system,y(n,:),y(n,1)+step);
     if (max(abs(sol)) > tol)
-        pv = PoleVault(system,y(n,:),angle(y1(1)-y(n,1)),h,th,tol);
+        [pv,val] = PoleVault(system,y(n,:),angle(y1(1)-y(n,1)),h,th,tol);
         if (abs(pv(size(pv,1),1)-y0(1)) > abs(y1(1)-y0(1)))
             %disp('terminating following pole vault');
             warning('CHAZY:ChazyPointsLine:poleVaultPastDestination','Pole vault result past destination.');
             out = [y;pv];
             return;
-        elseif (size(pv,1)==1)
+        elseif (val==0)
             warning('CHAZY:ChazyPointsLine:poleVaultIncomplete','Pole vault incomplete.');
             out = [y;pv];
             return;
