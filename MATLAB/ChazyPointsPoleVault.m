@@ -9,6 +9,7 @@ y(1,:)=y0(:);
 for ang = 0:th:(2*pi)
     %disp('new angle:');
     %disp(ang);
+    disp(100*ang/(2*pi));
     y = [y;ChazyPointsLine(system,y0,y0+r*exp(1i*ang),h,th,tol)];
 end
 

@@ -20,11 +20,13 @@ while (abs(m*th) < pi)
     %disp([y0,y0(1)+h*exp(1i*(ang+th*m))]);
     %disp(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)),tol));
     if (max(abs(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang-th*m)))))<tol)
-        initAngle = ang-th*m;
+        %initAngle = ang-th*m;
+        initAngle = ang-th*(m+1);
         break;
     end
     if (max(abs(ChazyEvalDirect(system,y0,y0(1)+h*exp(1i*(ang+th*m)))))<tol)
-        initAngle = ang+th*m;
+        %initAngle = ang+th*m;
+        initAngle = ang+th*(m+1);
         th = -th;
         break;
     end
@@ -45,7 +47,7 @@ alpha = 6;
 beta = .005;
 
 numSteps = floor(alpha+beta*(h^-1)*(abs(mod(initAngle,2*pi)-mod(ang,2*pi))));
-disp(numSteps);
+%disp(numSteps);
 
 while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)) > 1*h))
     %disp(initAngle);
@@ -56,7 +58,8 @@ while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i
     if (max(abs(eval))<tol)
         %valid, need to find closest contour by closing angle
         while (abs(m*th) < 2*pi)
-            eval2 = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*(m+1))));
+            %eval2 = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*(m+1))));
+            eval2 = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*(initAngle+th*(m+2))));
             %disp(eval2);
             if (max(abs(eval2))>tol)
                 lY = lY+1;
@@ -85,7 +88,8 @@ while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i
             %disp(eval);
             if (max(abs(eval))<tol) 
                 lY = lY+1;
-                y(lY,:) = eval;
+                %y(lY,:) = eval;
+                y(lY,:) = ChazyEvalDirect(system,y(lY-1,:),y(lY-1,1)+h*exp(1i*initAngle+th*(m-1)));
                 initAngle = initAngle+th*m;
                 found = 1;
                 break;
