@@ -14,6 +14,7 @@ for ang = 0:th:(2*pi)
 end
 
 out = y;
+disp(100);
 
 end
 
