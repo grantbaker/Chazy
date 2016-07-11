@@ -6,7 +6,7 @@ function [ out,valid ] = PoleVault(system, y0, ang, h, th, tol)
 %disp('new polevault at:');
 %disp([y0,ang]);
 
-stepAdj = 3;
+stepAdj = 1;
 
 valid = 0;
 y=[];
