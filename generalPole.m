@@ -99,6 +99,7 @@ function a =generalPole(system,y0,th0,tol,h,th,dist)
             n=n+1;
             y(n,:)=y1(:);
             ths(n)=th1;
+            th1;
         else
             bool=0;
             break;

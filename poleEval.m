@@ -20,7 +20,7 @@ function a =poleEval(Z)
     end
     b=sum/length(Z(:,1));
     r=sum2/length(Z(:,1));
-    if abs(c/b)<1
+    if abs(c/b)<.001
         al=round(al);
         branch=0;
     end
