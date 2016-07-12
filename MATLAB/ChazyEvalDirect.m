@@ -3,10 +3,11 @@ function [ result ] = ChazyEvalDirect(system, y0, y1)
 %returns result at y1
 
 %%{
-stepTol = 10^-8;
-minStep = 10^-8;
+stepTol = 10^-6;
+minStep = 10^-7;
 
 step = y1(1)-y0(1);
+%disp(abs(step));
 if (abs(step) < minStep)
     error('CHAZY:ChazyEvalDirect:minStepSizeReached','Minimum step size reached.');
 end
