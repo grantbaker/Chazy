@@ -51,8 +51,8 @@ for ang = 0:th:(2*pi)
                       c=a(m,1);
                       bool=0;
                   else
-                     yint(n+1,:)=y2+y1;
-                     n=n+1;
+                      yint(n+1,:)=y2+y1;
+                      n=n+1;
                   end
               end
               yint(n+1,:)=c;
