@@ -4,7 +4,7 @@ function [ out ] = GenPainII( in )
 %Painleve II
 
 alpha = 0;
-p=15;
+p=2;
 
 out = [1,in(3),2*(in(2))^3 + ((in(1))^p)*in(2) + alpha];
 
