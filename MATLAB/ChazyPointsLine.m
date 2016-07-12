@@ -19,7 +19,7 @@ for n = 1:abs(y1(1)-y0(1))/h
     sol = ChazyEvalDirect(system,y(n,:),y(n,1)+step);
     if (max(abs(sol)) > tol)
         [pv,val,circ] = PoleVault(system,y(n,:),angle(y1(1)-y(n,1)),h,th,tol);
-        c = [c,circ];
+        c = [c;circ];
         if (abs(pv(size(pv,1),1)-y0(1)) > abs(y1(1)-y0(1)))
             %disp('terminating following pole vault');
             warning('CHAZY:ChazyPointsLine:poleVaultPastDestination','Pole vault result past destination.');
@@ -29,6 +29,7 @@ for n = 1:abs(y1(1)-y0(1))/h
         elseif (val==0)
             warning('CHAZY:ChazyPointsLine:poleVaultIncomplete','Pole vault incomplete.');
             out = [y;pv];
+            clist = c;
             return;
         else
             [eval,circ] = ChazyPointsLine(system,pv(size(pv,1),:),y1,h,th,tol);

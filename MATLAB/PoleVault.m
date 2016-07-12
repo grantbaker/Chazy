@@ -44,14 +44,16 @@ end
 lY = lY+1;
 y(lY,:) = ChazyEvalDirect(system,y0,y0+h*exp(1i*initAngle));
 
+%{
 %adjustment parameters
-alpha = 5;
-beta = .005;
-
+alpha = 1;
+beta = .01;
 numSteps = floor(alpha+beta*(h^-1)*(abs(mod(initAngle,2*pi)-mod(ang,2*pi))));
-%disp(numSteps);
+disp(numSteps);
+%}
 
-while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)) > 1*h))
+%while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)) > 1*h))
+while and(lY<1000,(angle(y(lY,1)-y0(1))-ang)*(angle(y(lY-1,1)-y0(1))-ang)>0);
     %disp(initAngle);
     initAngle=mod(initAngle,2*pi);
     m = 0;
@@ -81,6 +83,7 @@ while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i
             lY = lY+1;
             found = 1;
             out = y;
+            circle = [0;0;0;0;0;0];
             return;
         end
     else
@@ -105,6 +108,7 @@ while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i
             lY = lY+1;
             found = 1;
             out = y;
+            circle = [0,0,0,0,0,0];
             return;
         end
         
@@ -125,7 +129,9 @@ out = y;
 circ = y;
 lC = lY;
 
-while and(lY<1000,or((lC-lY)<numSteps,abs(circ(lC,1) - y0(1) - abs(circ(lC,1)-y0(1))*exp(1i*ang)) > 1*h))
+%while and(lY<1000,or((lC-lY)<numSteps,abs(circ(lC,1) - y0(1) - abs(circ(lC,1)-y0(1))*exp(1i*ang)) > 1*h))
+%while and(lC<1000,(angle(circ(lC,1)-y(lY,1))-mod(ang+pi,2*pi))*(angle(circ(lC-1,1)-y(lY,1))-mod(ang+pi,2*pi))>0);
+while and(lC<1000,abs(circ(lC,1)-y0(1))>1*h)
     %disp(initAngle);
     initAngle=mod(initAngle,2*pi);
     m = 0;
@@ -152,7 +158,7 @@ while and(lY<1000,or((lC-lY)<numSteps,abs(circ(lC,1) - y0(1) - abs(circ(lC,1)-y0
             circ(lC+1,:) = ChazyEvalDirect(system,y(lY,:),y(lY,1)+h*exp(1i*initAngle));
             lC = lC+1;
             found = 1;
-            circle = circ;
+            circle = [0,0,0,0,0,0];
             return;
         end
     else
@@ -175,7 +181,7 @@ while and(lY<1000,or((lC-lY)<numSteps,abs(circ(lC,1) - y0(1) - abs(circ(lC,1)-y0
             circ(lC+1,:) = ChazyEvalDirect(system,circ(lC,:),circ(lC,1)+h*exp(1i*initAngle));
             lC = lC+1;
             found = 1;
-            circle = circ;
+            circle = [0,0,0,0,0,0];
             return;
         end
         
@@ -183,6 +189,9 @@ while and(lY<1000,or((lC-lY)<numSteps,abs(circ(lC,1) - y0(1) - abs(circ(lC,1)-y0
     
 end
 
-circle = circ;
+lC = lC+1;
+circ(lC,:) = ChazyEvalDirect(system,circ(lC-1,:),y0(1));
+
+circle = poleEval(circ);
 end
 
