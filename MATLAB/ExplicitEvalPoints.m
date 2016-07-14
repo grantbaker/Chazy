@@ -7,8 +7,9 @@ y=zeros(n,1);
 lY = 0;
 
 for angle = 0:th:2*pi
+    disp(100*angle/(2*pi));
     for mag = 0:h:r
-        disp(y0(1)+mag*exp(1i*angle));
+        %disp(y0(1)+mag*exp(1i*angle));
         eval = func(y0(1)+mag*exp(1i*angle));
         if (abs(eval)<tol)
             lY = lY+1;
@@ -17,6 +18,8 @@ for angle = 0:th:2*pi
         end
     end
 end
+
+disp(100);
 
 out = y(1:lY,:);
 
