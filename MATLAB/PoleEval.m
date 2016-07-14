@@ -1,4 +1,4 @@
-function a =poleEval(Z)
+function a =PoleEval(Z)
     sum=0;
     for n=1:length(Z(:,1))-1
         sum=sum+(((Z(n,3)/Z(n,2))+(Z(n+1,3)/Z(n+1,2)))/2)*(Z(n+1,1)-Z(n,1));
