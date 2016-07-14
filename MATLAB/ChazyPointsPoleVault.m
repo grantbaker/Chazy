@@ -16,6 +16,8 @@ for ang = 0:th:(2*pi)
     c = [c;circ];
 end
 
+c(ismember(c,[0,0,0,0,0,0],'rows'),:)=[];
+
 out = y;
 poles = c;
 disp(100);
