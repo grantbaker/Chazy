@@ -192,6 +192,5 @@ end
 lC = lC+1;
 circ(lC,:) = ChazyEvalDirect(system,circ(lC-1,:),y0(1));
 
-circle = poleEval(circ);
+circle = PoleEval(circ);
 end
-
