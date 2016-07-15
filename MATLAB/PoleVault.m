@@ -6,7 +6,7 @@ function [out,valid,circle] = PoleVault(system, y0, ang, h, th, tol)
 %disp('new polevault at:');
 %disp([y0,ang]);
 
-stepAdj = 0;
+stepAdj = 1;
 
 valid = 0;
 y=[];
@@ -53,7 +53,8 @@ disp(numSteps);
 %}
 
 %while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)) > 1*h))
-while and(lY<1000,(angle(y(lY,1)-y0(1))-ang)*(angle(y(lY-1,1)-y0(1))-ang)>0);
+%disp([angle(y(lY,1)-y0(1)),angle(y(lY-1,1)-y0(1)),ang]);
+while and(lY<200,or(lY==2,sign(mod(angle(y(lY,1)-y0(1)),2*pi)-mod(ang,2*pi))==sign(mod(angle(y(lY-1,1)-y0(1)),2*pi)-mod(ang,2*pi))));
     %disp(initAngle);
     initAngle=mod(initAngle,2*pi);
     m = 0;
@@ -131,7 +132,7 @@ lC = lY;
 
 %while and(lY<1000,or((lC-lY)<numSteps,abs(circ(lC,1) - y0(1) - abs(circ(lC,1)-y0(1))*exp(1i*ang)) > 1*h))
 %while and(lC<1000,(angle(circ(lC,1)-y(lY,1))-mod(ang+pi,2*pi))*(angle(circ(lC-1,1)-y(lY,1))-mod(ang+pi,2*pi))>0);
-while and(lC<1000,abs(circ(lC,1)-y0(1))>1*h)
+while and(lC<200,abs(circ(lC,1)-y0(1))>1*h)
     %disp(initAngle);
     initAngle=mod(initAngle,2*pi);
     m = 0;
@@ -193,4 +194,7 @@ lC = lC+1;
 circ(lC,:) = ChazyEvalDirect(system,circ(lC-1,:),y0(1));
 
 circle = PoleEval(circ);
+if (th<0)
+    circle(2) = -circle(2);
+end
 end

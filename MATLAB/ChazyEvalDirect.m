@@ -3,9 +3,9 @@ function [ result ] = ChazyEvalDirect(system, y0, y1)
 %returns result at y1
 
 %%{
-stepTol = 10^-2;
-minStep = 10^-10;
-minDelta = 10^-2;
+stepTol = 10^-1;
+minStep = 10^-12;
+minDelta = 10^-5;
 
 step = y1(1)-y0(1);
 %disp(abs(step));
@@ -24,7 +24,7 @@ if (R<stepTol)
     result = y0 + step*((25/216)*k1 + (1408/2565)*k3 + (2197/4104)*k4 + (-1/5)*k5);
     return;
 else
-    %{
+    %%{
     delta = 0.84*(stepTol/R)^(1/4);
     if (delta <= minDelta)
         delta = minDelta;
@@ -32,12 +32,13 @@ else
     n = floor(delta^-1);
     w0 = y0;
     for i = 1:n
-        w0 = ChazyEvalDirect(system,w0,(i/n)*(y1(1)-y0(1))+y0(1));
+        w0 = ChazyEvalDirect(system,w0,(delta*i/n)*(y1(1)-y0(1))+y0(1));
     end
+    w0 = ChazyEvalDirect(system,w0,y1(1));
     result = w0;
     %}
     
-    %%{
+    %{
     w0 = y0;
     for n = 1:10
         w0 = ChazyEvalDirect(system,w0,(n/10)*(y1(1)-y0(1))+y0(1));
@@ -68,8 +69,6 @@ else
     return;
 end;
 %}
-
-result = sol;
 
 end
 
