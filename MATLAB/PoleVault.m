@@ -53,7 +53,8 @@ disp(numSteps);
 %}
 
 %while and(lY<1000,or(lY<numSteps,abs(y(lY,1) - y0(1) - abs(y(lY,1)-y0(1))*exp(1i*ang)) > 1*h))
-while and(lY<200,(mod(angle(y(lY,1)-y0(1))-ang,2*pi))*(mod(angle(y(lY-1,1)-y0(1)),2*pi)-ang)>0);
+%disp([angle(y(lY,1)-y0(1)),angle(y(lY-1,1)-y0(1)),ang]);
+while and(lY<200,or(lY==2,sign(mod(angle(y(lY,1)-y0(1)),2*pi)-mod(ang,2*pi))==sign(mod(angle(y(lY-1,1)-y0(1)),2*pi)-mod(ang,2*pi))));
     %disp(initAngle);
     initAngle=mod(initAngle,2*pi);
     m = 0;
