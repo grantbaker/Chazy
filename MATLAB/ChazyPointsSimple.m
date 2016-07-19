@@ -26,6 +26,7 @@ for ang = 0:th:(2*pi)
     y = [y;yint];
    
 end
+disp(100);
 out = y;
 
 end
