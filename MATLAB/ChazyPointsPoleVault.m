@@ -16,23 +16,7 @@ for ang = 0:th:(2*pi)
     c = [c;circ];
 end
 
-c(ismember(c,[0,0,0,0,0,0],'rows'),:)=[];
-
-%del = zeros(size(c,1));
-radAdj=10;
-for i = 1:size(c,1)
-    j=i+1;
-    while j <= size(c,1)
-        if or(abs(c(i,3)-c(j,3))<radAdj*c(i,5),abs(c(i,3)-c(j,3))<radAdj*c(j,5))
-            %del(j)=1;
-            %disp(c(j,:));
-            c(j,:)=[];
-        else
-            j=j+1;
-        end
-    end
-end
-%c(del,:) = [];
+c = PoleConsolidation(c);
 
 out = y;
 poles = c;
