@@ -3,9 +3,9 @@ function [ result ] = ChazyEvalDirect(system, y0, y1)
 %returns result at y1
 
 %%{
-stepTol = 10^-3;
-minStep = 10^-10;
-minDelta = 10^-5;
+stepTol = 10^-1;
+minStep = 10^-5;
+minDelta = 10^-3;
 
 step = y1(1)-y0(1);
 %disp(abs(step));
